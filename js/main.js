@@ -3,11 +3,22 @@
 const form = document.querySelector('#form')
 const taskInput = document.querySelector('#taskInput')
 const tasksList = document.querySelector('#tasksList')
-const emptylist = document.querySelector('#EmtyList')
+const emptyList = document.querySelector('#EmtyList')
 
-
+//Добавление задачи
 
 form.addEventListener('submit', addTask)
+
+
+//удаление задачи
+
+tasksList.addEventListener('click', deleteTask)
+
+//Отмечаем задачу завершенной
+
+tasksList.addEventListener('click', doneTask)
+
+
 
 function addTask(event){
   //Отменяем отправку формы
@@ -40,10 +51,36 @@ function addTask(event){
  
  
  
- 
+ //Проверкаю Если в списке задач более 1-го элемента, скрываем блок
      if(tasksList.children.length > 1) {
-       emptylist.classList.add('none')
+       emptyList.classList.add('none')
      }
  
  
+}
+
+function deleteTask(event) {
+
+  if (event.target.dataset.action === 'delete'){
+     
+    const parentNode = event.target.closest('.list-group-item')
+    parentNode.remove()
+  }
+
+  if(tasksList.children.length === 1) {
+    emptyList.classList.remove('none')
+  }
+}
+
+function doneTask(event) {
+  
+  //проверяем что клик был по кнопке "Задача выполнена"
+
+  if(event.target.dataset.action === 'done') {
+    
+    const parentNode =event.target.closest(".list-group-item");
+    const taskTitle = parentNode.querySelector('.task-title');
+    taskTitle.classList.toggle('task-title--done');
+   
+  }
 }
