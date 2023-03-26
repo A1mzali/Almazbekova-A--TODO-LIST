@@ -64,13 +64,6 @@ function addTask(event){
      // Очищаем INPUT
      taskInput.value = " ";
      taskInput.focus()  //фокус возвращается к input
- 
- 
- 
- //Проверкаю Если в списке задач более 1-го элемента, скрываем блок
-     if(tasksList.children.length > 1) {
-       emptyList.classList.add('none')
-     }
 
 }
 
@@ -84,24 +77,18 @@ function deleteTask(event) {
     //Определяем ID задачи
     const id = Number (parentNode.id )
   
-    // 1 способ удаление---Находим индекс задачи в массиве
-   const index = tasks.findIndex(function(task) {
-        console.log(task);
-        if( task.id === id){
+  //  Удаление задача через фильтрацию массива
+       tasks = tasks.filter(function(task){
+        if(task.id === id){
+          return false
+        }else {
           return true
         }
+        // return task.id !== id;
     })
-    
-    //удаляем задачу из массива с задачами
-    tasks.splice(index, 1)
 
     //удаляем задачу из разметки
     parentNode.remove()
-
-  //проверка. Если в списке задач 1-ин элемент, показывает блок"Удалить задачу"
-     if(tasksList.children.length === 1) {
-        emptyList.classList.remove('none')
-  }
 
 }
 
@@ -111,6 +98,21 @@ function doneTask(event) {
   if(event.target.dataset.action !== 'done') return;
     
     const parentNode =event.target.closest(".list-group-item");
+
+    // определяем ID задачи
+    const id = Number(parentNode.id);
+
+   const task = tasks.find(function(task){
+      if(task.id === id) {
+        return true
+      }
+    })
+
+
+    task.done = !task.done
+
+    console.log(task);
+
     const taskTitle = parentNode.querySelector('.task-title');
     taskTitle.classList.toggle('task-title--done');
 
